@@ -4,7 +4,7 @@
          "type": "base",
          "density": 1, 
          "price" : 0,
-         "liquid": true,
+         "watercontent": 1,
          "sugarcontent": 0,
          "fatcontent": 0,
          "saltcontent": 0
@@ -13,7 +13,7 @@
          "type": "base",
          "density": 0.84, 
          "price" : 0.0005,
-         "liquid": false,
+         "watercontent": 0,
          "sugarcontent": 1,
          "fatcontent": 0,
          "saltcontent": 0
@@ -22,7 +22,7 @@
          "type": "base",
          "density": 0.75, 
          "price" : 0.0011,
-         "liquid": false,
+         "watercontent": 0,
          "sugarcontent": 0.01,
          "fatcontent": 0.01,
          "saltcontent": 0
@@ -31,7 +31,7 @@
          "type": "base",
          "density": 1.09, 
          "price" : 0.016,
-         "liquid": false,
+         "watercontent": 0.76,
          "sugarcontent": 0.02,
          "fatcontent": 0.18,
          "saltcontent": 0.002
@@ -40,7 +40,7 @@
          "type": "base",
          "density": 1.2, 
          "price" : 0.00139,
-         "liquid": false,
+         "watercontent": 0,
          "sugarcontent": 0,
          "fatcontent": 0,
          "saltcontent": 1
@@ -49,7 +49,7 @@
          "type": "flavour",
          "density": 0.71, 
          "price" : 0.0027,
-         "liquid": false,
+         "watercontent": 0.125,
          "sugarcontent": 0.5,
          "fatcontent": 0.34,
          "saltcontent": 0
@@ -58,7 +58,7 @@
          "type": "base",
          "density": 2.2, 
          "price" : 0.0098,
-         "liquid": false,
+         "watercontent": 0,
          "sugarcontent": 0,
          "fatcontent": 0,
          "saltcontent": 0
@@ -67,10 +67,10 @@
          "type": "base",
          "density": 0.911, 
          "price" : 0.0118,
-         "liquid": false,
+         "watercontent": 0.1675,
          "sugarcontent": 0.001,
          "fatcontent": 0.8,
-         "saltcontent": 0
+         "saltcontent": 0.015
         }
     ]
 }
