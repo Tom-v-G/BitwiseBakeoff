@@ -1,14 +1,5 @@
 {
     "ingredients" : [
-        {"name": "water",
-         "type": "base",
-         "density": 1, 
-         "price" : 0,
-         "watercontent": 1,
-         "sugarcontent": 0,
-         "fatcontent": 0,
-         "saltcontent": 0
-        },
         {"name": "sugar",
          "type": "base",
          "density": 0.84, 
@@ -46,7 +37,7 @@
          "saltcontent": 1
         },
         {"name": "chocolate",
-         "type": "flavour",
+         "type": "base",
          "density": 0.71, 
          "price" : 0.0027,
          "watercontent": 0.125,
@@ -71,6 +62,35 @@
          "sugarcontent": 0.001,
          "fatcontent": 0.8,
          "saltcontent": 0.015
+        },
+        {"name": "milk",
+         "type": "base",
+         "density": 1.030, 
+         "price" : 0.00047,
+         "watercontent": 0.87,
+         "sugarcontent": 0.05,
+         "fatcontent": 0.01,
+         "saltcontent": 0.00044
+        },
+        {"name": "vanilla extract",
+         "type": "flavour enhancer",
+         "density": 0.88, 
+         "price" : 0.035,
+         "watercontent": 0.87,
+         "sugarcontent": 0.13,
+         "fatcontent": 0.001,
+         "saltcontent": 0
+        },
+
+        {"name": "water",
+         "type": "flavour enhancer",
+         "density": 1, 
+         "price" : 0,
+         "watercontent": 1,
+         "sugarcontent": 0,
+         "fatcontent": 0,
+         "saltcontent": 0
         }
+        
     ]
 }

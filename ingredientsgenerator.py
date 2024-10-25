@@ -9,11 +9,8 @@ from geneticalgorithm import geneticalgorithm as ga
 
 class CookieStuffs:
 
-    def __init__(self, jsonfile, fitness_weights=None) -> None:
-        # Open and read the JSON file
-        with open(jsonfile, 'r') as file:
-            self.ingredients = json.load(file)["ingredients"]
-
+    def __init__(self, ingredients, fitness_weights=None, algorithm_params=None) -> None:
+        self.ingredients = ingredients
         self.beziercurve_dict = {
             "sugarcontent": [0, 2.165, 0.03, 0],
             "fatcontent": [0, 1.953, 0.468, 0],
@@ -22,6 +19,20 @@ class CookieStuffs:
             "watercontent": [0, 0.103, 2.1, 0],
             "flour": [0, 2.165, 0.03, 0]
         }
+
+        if algorithm_params is not None: 
+            self.algorithm_params = algorithm_params 
+        else:    
+            self.algorithm_params =  {
+                   'max_num_iteration': 3000,\
+                   'population_size':100,\
+                   'mutation_probability':0.1,\
+                   'elit_ratio': 0.01,\
+                   'crossover_probability': 0.5,\
+                   'parents_portion': 0.3,\
+                   'crossover_type':'uniform',\
+                   'max_iteration_without_improv':None
+            }
         
         if fitness_weights is not None:
             assert(len(fitness_weights) == len(self.beziercurve_dict))
@@ -31,7 +42,6 @@ class CookieStuffs:
 
     def normalize(self, ingredients, total_weight=300):
         # Normalise for batches of 300 gram cookie dough
-        # [ 1 3 6 4 0 ]
         return (np.array(ingredients) * total_weight) / np.sum(ingredients)
 
     def calculate_content_percentage(self, normalized_ingredients, identifier):
@@ -64,9 +74,31 @@ class CookieStuffs:
 
         return -1 * fitness
 
+    def GA(self, total_weight=300):
+        
+        varbound=np.array([[1, (total_weight / 2)]]*len(self.ingredients))
+
+        model=ga(function=self.fitness_function, 
+             dimension=len(self.ingredients),
+             variable_type='int',
+             variable_boundaries=varbound,
+             algorithm_parameters=self.algorithm_params,
+             convergence_curve=False)
+        
+        model.run()
+        solution=model.output_dict
+
+        return self.normalize(solution['variable'])
+
 if __name__ == "__main__":
+
     fitness_weights = [3, 1, 0.2, 4, 1, 1]
-    G = CookieStuffs("ingredients.json", fitness_weights=fitness_weights)
+    
+    # Open and read the JSON file
+    with open("ingredients.json", 'r') as file:
+        ingredients = json.load(file)["ingredients"]
+
+    G = CookieStuffs(ingredients, fitness_weights=fitness_weights)
     recipe = [1, 3, 5, 6, 3, 1, 5, 1]
     print(np.sum(recipe))
 
@@ -111,16 +143,3 @@ if __name__ == "__main__":
     {best_recipe[6]} grams of baking soda \n \
     {best_recipe[7]} grams of butter \n \
     ')
-    # print(convergence)
-    # print(solution)
-    # GA
-# {        
-#          "name": "butter",
-#          "type": "base",
-#          "density": 0.911, 
-#          "price" : 0.0118,
-#          "liquid": false,
-#          "sugarcontent": 0.001,
-#          "fatcontent": 0.8,
-#          "saltcontent": 0
-# }
