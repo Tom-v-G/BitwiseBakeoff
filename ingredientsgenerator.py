@@ -10,11 +10,11 @@ class CookieStuffs:
         self.beziercurve_dict = {
             "sugarcontent": [0, 2.165, 0.03, 0],
             "fatcontent": [0, 1.953, 0.468, 0],
-            "price": [1, 0.982, 0.538, 0],
-            "saltcontent": [0, 2.204, 0, 0],
+            "price": [2],
+            "saltcontent": [5],
             "watercontent": [0, 0.103, 2.1, 0],
             "flour": [0, 2.165, 0.03, 0],
-            "flavor_enhancer_weight": [-25]
+            "flavor_enhancer_weight": [25]
         }
 
         if algorithm_params is not None: 
@@ -68,10 +68,10 @@ class CookieStuffs:
         
         fitness += f1 * self.bezier_curve(*self.beziercurve_dict["sugarcontent"], self.calculate_content_percentage(norm_ingredients, "sugarcontent"))
         fitness += f2 * self.bezier_curve(*self.beziercurve_dict["fatcontent"], self.calculate_content_percentage(norm_ingredients, "fatcontent"))
-        fitness += f3 * self.bezier_curve(*self.beziercurve_dict["price"], self.calculate_content_percentage(norm_ingredients, "price"))
-        fitness += f4 * self.exponential_decay(5, self.calculate_content_percentage(norm_ingredients, "saltcontent"))
+        fitness += f3 * self.exponential_decay(*self.beziercurve_dict["price"], self.calculate_content_percentage(norm_ingredients, "price"))
+        fitness += f4 * self.exponential_decay(*self.beziercurve_dict["saltcontent"], self.calculate_content_percentage(norm_ingredients, "saltcontent"))
         fitness += f5 * self.bezier_curve(*self.beziercurve_dict["watercontent"], self.calculate_content_percentage(norm_ingredients, "watercontent"))
-        fitness += f6 * self.bezier_curve(*self.beziercurve_dict["flour"], norm_ingredients[2] / np.sum(norm_ingredients))
+        fitness += f6 * self.bezier_curve(*self.beziercurve_dict["flour"], norm_ingredients[1] / np.sum(norm_ingredients))
         fitness += f7 * self.exponential_decay(*self.beziercurve_dict["flavor_enhancer_weight"], self.calculate_content_percentage(norm_ingredients, None, type_filter="flavor enhancer"))
 
         return -1 * fitness
