@@ -80,16 +80,6 @@
          "sugarcontent": 0.13,
          "fatcontent": 0.001,
          "saltcontent": 0
-        },
-        {"name": "water",
-         "type": "flavour enhancer",
-         "density": 1, 
-         "price" : 0,
-         "watercontent": 1,
-         "sugarcontent": 0,
-         "fatcontent": 0,
-         "saltcontent": 0
-        }
-        
+        }       
     ]
 }

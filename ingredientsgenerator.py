@@ -3,10 +3,6 @@ import numpy as np
 from geneticalgorithm import geneticalgorithm as ga
 
 
-
-
-# print(data["ingredients"][0])
-
 class CookieStuffs:
 
     def __init__(self, ingredients, fitness_weights=None, algorithm_params=None) -> None:
@@ -17,7 +13,8 @@ class CookieStuffs:
             "price": [1, 0.982, 0.538, 0],
             "saltcontent": [0, 2.204, 0, 0],
             "watercontent": [0, 0.103, 2.1, 0],
-            "flour": [0, 2.165, 0.03, 0]
+            "flour": [0, 2.165, 0.03, 0],
+            "flavor_enhancer_weight": [-25]
         }
 
         if algorithm_params is not None: 
@@ -44,10 +41,14 @@ class CookieStuffs:
         # Normalise for batches of 300 gram cookie dough
         return (np.array(ingredients) * total_weight) / np.sum(ingredients)
 
-    def calculate_content_percentage(self, normalized_ingredients, identifier):
+    def calculate_content_percentage(self, normalized_ingredients, identifier, type_filter=None):
         total_val = 0
         for idx, weight in enumerate(normalized_ingredients):
-            total_val += self.ingredients[idx][identifier] * weight
+            if type_filter is None:
+                total_val += self.ingredients[idx][identifier] * weight
+            else:
+                if self.ingredients[idx]["type"] == type_filter:
+                    total_val +=  weight
         return total_val / np.sum(normalized_ingredients)
     
     @staticmethod
@@ -63,7 +64,7 @@ class CookieStuffs:
     def fitness_function(self, norm_ingredients):
         fitness = 0
         
-        f1, f2, f3, f4, f5, f6 = self.fitness_weights
+        f1, f2, f3, f4, f5, f6, f7 = self.fitness_weights
         
         fitness += f1 * self.bezier_curve(*self.beziercurve_dict["sugarcontent"], self.calculate_content_percentage(norm_ingredients, "sugarcontent"))
         fitness += f2 * self.bezier_curve(*self.beziercurve_dict["fatcontent"], self.calculate_content_percentage(norm_ingredients, "fatcontent"))
@@ -71,6 +72,7 @@ class CookieStuffs:
         fitness += f4 * self.exponential_decay(5, self.calculate_content_percentage(norm_ingredients, "saltcontent"))
         fitness += f5 * self.bezier_curve(*self.beziercurve_dict["watercontent"], self.calculate_content_percentage(norm_ingredients, "watercontent"))
         fitness += f6 * self.bezier_curve(*self.beziercurve_dict["flour"], norm_ingredients[2] / np.sum(norm_ingredients))
+        fitness += f7 * self.exponential_decay(*self.beziercurve_dict["flavor_enhancer_weight"], self.calculate_content_percentage(norm_ingredients, None, type_filter="flavor enhancer"))
 
         return -1 * fitness
 
@@ -92,14 +94,14 @@ class CookieStuffs:
 
 if __name__ == "__main__":
 
-    fitness_weights = [3, 1, 0.2, 4, 1, 1]
+    fitness_weights = [3, 1, 0.2, 4, 1, 1, 1]
     
     # Open and read the JSON file
     with open("ingredients.json", 'r') as file:
         ingredients = json.load(file)["ingredients"]
 
     G = CookieStuffs(ingredients, fitness_weights=fitness_weights)
-    recipe = [1, 3, 5, 6, 3, 1, 5, 1]
+    recipe = [1, 3, 5, 6, 3, 1, 5, 1, 1, 5]
     print(np.sum(recipe))
 
     total_weight = 300
@@ -133,13 +135,7 @@ if __name__ == "__main__":
 
     #print(solution.variable)
     best_recipe = G.normalize(solution['variable'])
-    print(f' \
-    {best_recipe[0]} grams of water \n \
-    {best_recipe[1]} grams of sugar \n \
-    {best_recipe[2]} grams of flour \n \
-    {best_recipe[3]} grams of eggs \n \
-    {best_recipe[4]} grams of salt \n \
-    {best_recipe[5]} grams of chocolate \n \
-    {best_recipe[6]} grams of baking soda \n \
-    {best_recipe[7]} grams of butter \n \
-    ')
+    
+    for idx, weight in enumerate(best_recipe):
+        print(f"{weight} grams of {ingredients[idx]['name']}\n")
+

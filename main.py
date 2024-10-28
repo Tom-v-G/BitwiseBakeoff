@@ -50,10 +50,10 @@ def read_ingredients_from_json(jsonfile):
 if __name__ == "__main__":
     ingredients_dict = read_ingredients_from_json("ingredients.json")
     fitness_weights_dict = {
-        'low cost cookie': [1, 1, 5, 1, 1, 1],
-        'sweet cookie': [5, 1, 1, 1, 1, 1],
-        'chocolaty cookie': [1, 1, 0.2, 1, 1, 1],
-        'non fat cookie': [1, 5, 1, 1, 1, 1]
+        'low cost cookie': [1, 1, 5, 1, 1, 1, 1],
+        'sweet cookie': [5, 1, 1, 1, 1, 1, 1],
+        'chocolaty cookie': [1, 1, 0.2, 1, 1, 1, 1],
+        'non fat cookie': [1, 5, 1, 1, 1, 1, 1]
                             }
     notes = list(fitness_weights_dict.keys())
     for idx, fitness_weights in enumerate(fitness_weights_dict.values()):
